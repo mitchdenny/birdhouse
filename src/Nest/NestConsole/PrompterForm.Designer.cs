@@ -46,11 +46,11 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1105, 778);
             this.Controls.Add(this.webBrowser);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "PrompterForm";
             this.Text = "Authentication / Authorization";
+            this.Load += new System.EventHandler(this.PrompterForm_Load);
             this.ResumeLayout(false);
 
         }

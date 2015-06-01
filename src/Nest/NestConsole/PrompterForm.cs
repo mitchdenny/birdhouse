@@ -24,9 +24,12 @@ namespace NestConsole
         public PrompterForm()
         {
             InitializeComponent();
+        }
 
+        private void PrompterForm_Load(object sender, EventArgs e)
+        {
             var url = string.Format("https://home.nest.com/login/oauth2?client_id={0}&state=STATE", this.clientID);
-            this.webBrowser.Url = new Uri(url);
+            this.webBrowser.Navigate(url);
         }
     }
 }
