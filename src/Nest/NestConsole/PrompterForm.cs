@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -32,7 +33,6 @@ namespace NestConsole
         {
             var url = string.Format("https://home.nest.com/login/oauth2?client_id={0}&state=STATE", this.clientID);
             this.webBrowser.Navigate(url);
-
         }
 
         public string AuthorizationCode { get; private set; }
