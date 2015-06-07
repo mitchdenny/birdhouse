@@ -1,4 +1,5 @@
 ﻿using Nest;
+using NestConsole.Properties;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -15,10 +16,10 @@ namespace NestConsole
     public class Program
     {
         private static async Task<string> GetAccessTokenAsync(string authorizationCode) {
-            var clientID = ConfigurationManager.AppSettings["ClientID"];
-            var clientSecret = ConfigurationManager.AppSettings["ClientSecret"];
+            var clientID = Settings.Default.ClientID;
+            var clientSecret = Settings.Default.ClientSecret;
 
-            var requestUri = string.Format(
+            var requestUrl = string.Format(
                 "https://api.home.nest.com/oauth2/access_token?code={0}&client_id={1}&client_secret={2}&grant_type=authorization_code",
                 authorizationCode,
                 clientID,
@@ -26,9 +27,12 @@ namespace NestConsole
                 );
 
             var client = new HttpClient();
-            var response = await client.PostAsync(requestUri, null);
+            var response = await client.PostAsync(requestUrl, null);
             var payloadString = await response.Content.ReadAsStringAsync();
-            var payload = JsonConvert.DeserializeAnonymousType(payloadString, new { access_token = string.Empty });
+            var payload = JsonConvert.DeserializeAnonymousType(
+                payloadString,
+                new { access_token = string.Empty }
+                );
   
             return payload.access_token;
         }
@@ -36,32 +40,46 @@ namespace NestConsole
         [STAThread()]
         public static void Main(string[] args)
         {
-            var clientID = ConfigurationManager.AppSettings["ClientID"];
-            var clientSecret = ConfigurationManager.AppSettings["ClientSecret"];
+            var accessToken = Program.GetAccessToken();
+            var client = new NestClient(accessToken);
 
-            var prompter = new PrompterForm(clientID, clientSecret);
-            var result = prompter.ShowDialog();
+            var thermostats = Task.Run(() => client.GetThermostatsAsync()).Result;
 
-            if (result == DialogResult.OK)
+            foreach (var thermostat in thermostats)
             {
-                var authorizationCode = prompter.AuthorizationCode;
-                Console.WriteLine("Authorization Code: {0}", authorizationCode);
+                Console.WriteLine(thermostat);
+            }
+        }
 
-                var accessToken = Task.Run(() => Program.GetAccessTokenAsync(authorizationCode)).Result;
-                Console.WriteLine(accessToken);
+        private static string GetAccessToken()
+        {
+            var cachedAccessToken = Settings.Default.CachedAccessToken;
 
-                var client = new NestClient(accessToken);
+            if (string.IsNullOrEmpty(cachedAccessToken))
+            {
+                var clientID = Settings.Default.ClientID;
+                var clientSecret = Settings.Default.ClientSecret;
 
-                var thermostats = Task.Run(() => client.GetThermostatsAsync()).Result;
 
-                foreach (var thermostat in thermostats)
+                var prompter = new PrompterForm(clientID, clientSecret);
+                var result = prompter.ShowDialog();
+
+                if (result == DialogResult.OK)
                 {
-                    Console.WriteLine(thermostat);
+                    var authorizationCode = prompter.AuthorizationCode;
+                    var accessToken = Task.Run(() => Program.GetAccessTokenAsync(authorizationCode)).Result;
+                    Settings.Default.CachedAccessToken = accessToken;
+                    Settings.Default.Save();
+                    return accessToken;
+                }
+                else
+                {
+                    throw new InvalidOperationException("Failed to authenticate.");
                 }
             }
             else
             {
-                Console.WriteLine("Failed to authenticate.");
+                return cachedAccessToken;
             }
         }
     }
