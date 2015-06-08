@@ -44,10 +44,22 @@ namespace NestConsole
             var client = new NestClient(accessToken);
 
             var thermostats = Task.Run(() => client.GetThermostatsAsync()).Result;
+            var smokeAlarms = Task.Run(() => client.GetSmokeAlarmsAsync()).Result;
+            var structures = Task.Run(() => client.GetStructuresAsync()).Result;
 
             foreach (var thermostat in thermostats)
             {
                 Console.WriteLine(thermostat);
+            }
+
+            foreach (var smokeAlarm in smokeAlarms)
+            {
+                Console.WriteLine(smokeAlarm);
+            }
+
+            foreach (var structure in structures)
+            {
+                Console.WriteLine(structure);
             }
         }
 
