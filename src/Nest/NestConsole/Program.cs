@@ -49,6 +49,7 @@ namespace NestConsole
 
             foreach (var thermostat in thermostats)
             {
+                var newThermostat = Task.Run(() => client.GetThermostatAsync(thermostat.Key)).Result;
                 Console.WriteLine(thermostat);
             }
 
