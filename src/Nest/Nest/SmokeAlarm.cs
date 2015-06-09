@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Nest
 {
-    public class SmokeAlarm
+    public class SmokeAlarm : Device
     {
     }
 }

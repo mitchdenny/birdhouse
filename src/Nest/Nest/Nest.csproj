@@ -34,6 +34,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Device.cs" />
     <Compile Include="Eta.cs" />
     <Compile Include="NestClient.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

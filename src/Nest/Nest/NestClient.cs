@@ -22,15 +22,36 @@ namespace Nest
 
         private string accessToken;
 
-        private async Task<Dictionary<string, T>> GetAsync<T>(string url)
+        private async Task<JToken> GetPayloadAsync(string url)
         {
             var client = new HttpClient();
             var response = await client.GetAsync(url);
 
             var payloadAsString = await response.Content.ReadAsStringAsync();
             var payload = JToken.Parse(payloadAsString);
+            return payload;
+        }
 
-            if (payload.Count() == 1)
+        private async Task<T> GetItemAsync<T>(string url) where T: class
+        {
+            var payload = await this.GetPayloadAsync(url);
+
+            if (payload.Count() < 1)
+            {
+                return null;
+            }
+            else
+            {
+                var entity = payload.ToObject<T>();
+                return entity;
+            }
+        }
+
+        private async Task<Dictionary<string, T>> GetItemsAsync<T>(string url)
+        {
+            var payload = await this.GetPayloadAsync(url);
+
+            if (payload.Count() < 1)
             {
                 return null;
             }
@@ -44,81 +65,43 @@ namespace Nest
         public async Task<Dictionary<string, Thermostat>> GetThermostatsAsync()
         {
             var thermostatsUrl = string.Format(NestClient.ThermostatsQuery, null, this.accessToken);
-
-            var client = new HttpClient();
-            var response = await client.GetAsync(thermostatsUrl);
-
-            var payloadAsString = await response.Content.ReadAsStringAsync();
-            var payload = JToken.Parse(payloadAsString);
-
-            if (payload.Count() == 0)
-            {
-                return null;
-            }
-            else
-            {
-                var thermostats = payload.ToObject<Dictionary<string, Thermostat>>();
-                return thermostats;
-            }
+            var thermostats = await this.GetItemsAsync<Thermostat>(thermostatsUrl);
+            return thermostats;
         }
 
         public async Task<Thermostat> GetThermostatAsync(string thermostatID)
         {
             var thermostatsUrl = string.Format(NestClient.ThermostatsQuery, thermostatID, this.accessToken);
-            var thermostats = await this.GetAsync<Thermostat>(thermostatsUrl);
-            return thermostats[thermostatID];
+            var thermostat = await this.GetItemAsync<Thermostat>(thermostatsUrl);
+            return thermostat;
         }
 
         public async Task<Dictionary<string, SmokeAlarm>> GetSmokeAlarmsAsync()
         {
             var smokeAlarmsUrl = string.Format(NestClient.SmokeAlarmsQuery, null, this.accessToken);
-
-            var client = new HttpClient();
-            var response = await client.GetAsync(smokeAlarmsUrl);
-
-            var payloadAsString = await response.Content.ReadAsStringAsync();
-            var payload = JToken.Parse(payloadAsString);
-
-            if (payload.Count() == 0)
-            {
-                return null;
-            }
-            else
-            {
-                var smokeAlarms = payload.ToObject<Dictionary<string, SmokeAlarm>>();
-                return smokeAlarms;
-            }
+            var smokeAlarms = await this.GetItemsAsync<SmokeAlarm>(smokeAlarmsUrl);
+            return smokeAlarms;
         }
 
-        public async Task<SmokeAlarm> GetSmokeAlarm(string smokeAlarmID)
+        public async Task<SmokeAlarm> GetSmokeAlarmAsync(string smokeAlarmID)
         {
-            return null;
+            var smokeAlarmsUrl = string.Format(NestClient.SmokeAlarmsQuery, smokeAlarmID, this.accessToken);
+            var smokeAlarm = await this.GetItemAsync<SmokeAlarm>(smokeAlarmsUrl);
+            return smokeAlarm;
         }
 
         public async Task<Dictionary<string, Structure>> GetStructuresAsync()
         {
             var structuresUrl = string.Format(NestClient.StructuresQuery, null, this.accessToken);
-
-            var client = new HttpClient();
-            var response = await client.GetAsync(structuresUrl);
-
-            var payloadAsString = await response.Content.ReadAsStringAsync();
-            var payload = JToken.Parse(payloadAsString);
-
-            if (payload.Count() == 0)
-            {
-                return null;
-            }
-            else
-            {
-                var structures = payload.ToObject<Dictionary<string, Structure>>();
-                return structures;
-            }
+            var structures = await this.GetItemsAsync<Structure>(structuresUrl);
+            return structures;
         }
 
         public async Task<Structure> GetStructureAsync(string structureID)
         {
-            return null;
+            var structuresUrl = string.Format(NestClient.StructuresQuery, structureID, this.accessToken);
+            var structure = await this.GetItemAsync<Structure>(structuresUrl);
+            return structure;
         }
     }
 }

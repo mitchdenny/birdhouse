@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Nest
 {
-    public class Thermostat
+    public class Thermostat : Device
     {
         public Thermostat()
         {
@@ -36,9 +36,6 @@ namespace Nest
 
         [JsonProperty("where_id")]
         public string WhereID { get; set; }
-
-        [JsonProperty("device_id")]
-        public string DeviceID { get; set; }
 
         [JsonProperty("name")]
         public string Name { get; set; }
