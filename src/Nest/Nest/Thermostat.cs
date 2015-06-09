@@ -16,9 +16,6 @@ namespace Nest
         [JsonProperty("humidity")]
         public float Humidity { get; set; }
 
-        [JsonProperty("locale")]
-        public string Locale { get; set; }
-
         [JsonProperty("temperature_scale")]
         public string TemperatureScale { get; set; }
 
@@ -28,17 +25,8 @@ namespace Nest
         [JsonProperty("has_fan")]
         public bool HasFan { get; set; }
 
-        [JsonProperty("software_version")]
-        public string SoftwareVersion { get; set; }
-
         [JsonProperty("has_leaf")]
         public bool HasLeaf { get; set; }
-
-        [JsonProperty("where_id")]
-        public string WhereID { get; set; }
-
-        [JsonProperty("name")]
-        public string Name { get; set; }
 
         [JsonProperty("can_heat")]
         public bool CanHeat { get; set; }
@@ -85,17 +73,8 @@ namespace Nest
         [JsonProperty("away_temperature_low_f")]
         public string AwayTemperatureLowFahrenheit { get; set; }
 
-        [JsonProperty("structure_id")]
-        public string StructureID { get; set; }
-
         [JsonProperty("fan_timer_active")]
         public bool FanTimerActive { get; set; }
-
-        [JsonProperty("name_long")]
-        public string NameLong { get; set; }
-
-        [JsonProperty("is_online")]
-        public bool IsOnline { get; set; }
 
         [JsonProperty("last_connection")]
         public DateTimeOffset LastConnection { get; set; }
