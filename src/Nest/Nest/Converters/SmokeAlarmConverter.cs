@@ -5,20 +5,20 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Nest
+namespace Nest.Converters
 {
-    internal class ThermostatConverter : CustomCreationConverter<Thermostat>
+    internal class SmokeAlarmConverter : CustomCreationConverter<SmokeAlarm>
     {
-        public ThermostatConverter(NestClient client)
+        public SmokeAlarmConverter(NestClient client)
         {
             this.client = client;
         }
 
         private NestClient client;
 
-        public override Thermostat Create(Type objectType)
+        public override SmokeAlarm Create(Type objectType)
         {
-            return new Thermostat(this.client);
+            return new SmokeAlarm(this.client);
         }
     }
 }

@@ -41,6 +41,8 @@ namespace NestConsole
         public static void Main(string[] args)
         {
             var accessToken = Program.GetAccessToken();
+            Console.WriteLine("Access Token: ", accessToken);
+
             var client = new NestClient(accessToken);
 
             var thermostats = Task.Run(() => client.GetThermostatsAsync()).Result;

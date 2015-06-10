@@ -5,20 +5,20 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Nest
+namespace Nest.Converters
 {
-    internal class StructureConverter : CustomCreationConverter<Structure>
+    internal class ThermostatConverter : CustomCreationConverter<Thermostat>
     {
-        public StructureConverter(NestClient client)
+        public ThermostatConverter(NestClient client)
         {
             this.client = client;
         }
 
         private NestClient client;
 
-        public override Structure Create(Type objectType)
+        public override Thermostat Create(Type objectType)
         {
-            return new Structure(this.client);
+            return new Thermostat(this.client);
         }
     }
 }

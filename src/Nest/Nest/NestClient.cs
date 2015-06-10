@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using Nest.Converters;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -38,7 +39,7 @@ namespace Nest
             return payload;
         }
 
-        private async Task<T> GetItemAsync<T>(string url) where T: class
+        internal async Task<T> GetItemAsync<T>(string url) where T: class
         {
             var payload = await this.GetPayloadAsync(url);
 
@@ -53,7 +54,7 @@ namespace Nest
             }
         }
 
-        private async Task<Dictionary<string, T>> GetItemsAsync<T>(string url)
+        internal async Task<Dictionary<string, T>> GetItemsAsync<T>(string url)
         {
             var payload = await this.GetPayloadAsync(url);
 

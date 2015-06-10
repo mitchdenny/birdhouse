@@ -5,20 +5,20 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Nest
+namespace Nest.Converters
 {
-    internal class SmokeAlarmConverter : CustomCreationConverter<SmokeAlarm>
+    internal class StructureConverter : CustomCreationConverter<Structure>
     {
-        public SmokeAlarmConverter(NestClient client)
+        public StructureConverter(NestClient client)
         {
             this.client = client;
         }
 
         private NestClient client;
 
-        public override SmokeAlarm Create(Type objectType)
+        public override Structure Create(Type objectType)
         {
-            return new SmokeAlarm(this.client);
+            return new Structure(this.client);
         }
     }
 }

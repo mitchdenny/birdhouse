@@ -10,9 +10,9 @@ namespace Nest
     public class Where
     {
         [JsonProperty("where_id")]
-        public string WhereID { get; set; }
+        public string WhereID { get; internal set; }
 
         [JsonProperty("name")]
-        public string Name { get; set; }
+        public string Name { get; internal set; }
     }
 }

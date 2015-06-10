@@ -10,12 +10,12 @@ namespace Nest
     public class Eta
     {
         [JsonProperty("trip_id")]
-        public string TripID { get; set; }
+        public string TripID { get; internal set; }
 
         [JsonProperty("estimated_arrival_window_begin")]
-        public DateTimeOffset EstimatedArrivalWindowBegin { get; set; }
+        public DateTimeOffset EstimatedArrivalWindowBegin { get; internal set; }
 
         [JsonProperty("estimated_arrival_window_end")]
-        public DateTimeOffset EstimatedArrivalWindowEnd { get; set; }
+        public DateTimeOffset EstimatedArrivalWindowEnd { get; internal set; }
     }
 }

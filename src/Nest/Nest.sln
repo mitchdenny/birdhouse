@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nest", "Nest\Nest.csproj", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NestConsole", "NestConsole\NestConsole.csproj", "{FEE88716-2F11-4046-89B8-06A22DE735B1}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nest.Tests", "Nest.Tests\Nest.Tests.csproj", "{55896FFC-6373-4DC1-9916-863DEBDADA3D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{FEE88716-2F11-4046-89B8-06A22DE735B1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FEE88716-2F11-4046-89B8-06A22DE735B1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FEE88716-2F11-4046-89B8-06A22DE735B1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{55896FFC-6373-4DC1-9916-863DEBDADA3D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{55896FFC-6373-4DC1-9916-863DEBDADA3D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{55896FFC-6373-4DC1-9916-863DEBDADA3D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{55896FFC-6373-4DC1-9916-863DEBDADA3D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

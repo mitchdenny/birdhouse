@@ -9,7 +9,7 @@ namespace Nest
 {
     public class SmokeAlarm : Device
     {
-        internal SmokeAlarm(NestClient client)
+        internal SmokeAlarm(NestClient client) : base(client)
         {
             this.client = client;
         }
@@ -17,21 +17,21 @@ namespace Nest
         private NestClient client;
 
         [JsonProperty("battery_health")]
-        public string BatteryHealth { get; set; }
+        public string BatteryHealth { get; internal set; }
 
         [JsonProperty("co_alarm_state")]
-        public string CoAlarmState { get; set; }
+        public string CoAlarmState { get; internal set; }
 
         [JsonProperty("smoke_alarm_state")]
-        public string SmokeAlarmState { get; set; }
+        public string SmokeAlarmState { get; internal set; }
 
         [JsonProperty("ui_color_state")]
-        public string UiColorState { get; set; }
+        public string UiColorState { get; internal set; }
 
         [JsonProperty("is_manual_test_active")]
-        public bool IsManualTestActive { get; set; }
+        public bool IsManualTestActive { get; internal set; }
 
         [JsonProperty("last_manual_test_time")]
-        public DateTimeOffset LastManualTestTime { get; set; }
+        public DateTimeOffset LastManualTestTime { get; internal set; }
     }
 }
