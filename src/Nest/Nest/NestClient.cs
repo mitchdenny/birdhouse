@@ -18,9 +18,15 @@ namespace Nest
         public NestClient(string accessToken)
         {
             this.accessToken = accessToken;
+            
+            this.serializer = new JsonSerializer();
+            this.serializer.Converters.Add(new ThermostatConverter(this));
+            this.serializer.Converters.Add(new SmokeAlarmConverter(this));
+            this.serializer.Converters.Add(new StructureConverter(this));
         }
 
         private string accessToken;
+        private JsonSerializer serializer;
 
         private async Task<JToken> GetPayloadAsync(string url)
         {
@@ -42,7 +48,7 @@ namespace Nest
             }
             else
             {
-                var entity = payload.ToObject<T>();
+                var entity = payload.ToObject<T>(this.serializer);
                 return entity;
             }
         }
@@ -57,7 +63,7 @@ namespace Nest
             }
             else
             {
-                var entities = payload.ToObject<Dictionary<string, T>>();
+                var entities = payload.ToObject<Dictionary<string, T>>(this.serializer);
                 return entities;
             }
         }

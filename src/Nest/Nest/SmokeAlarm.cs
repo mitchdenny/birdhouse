@@ -9,6 +9,13 @@ namespace Nest
 {
     public class SmokeAlarm : Device
     {
+        internal SmokeAlarm(NestClient client)
+        {
+            this.client = client;
+        }
+
+        private NestClient client;
+
         [JsonProperty("battery_health")]
         public string BatteryHealth { get; set; }
 

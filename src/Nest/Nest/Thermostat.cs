@@ -9,9 +9,12 @@ namespace Nest
 {
     public class Thermostat : Device
     {
-        public Thermostat()
+        internal Thermostat(NestClient client)
         {
+            this.client = client;
         }
+
+        private NestClient client;
 
         [JsonProperty("humidity")]
         public float Humidity { get; set; }

@@ -9,6 +9,13 @@ namespace Nest
 {
     public class Structure
     {
+        internal Structure(NestClient client)
+        {
+            this.client = client;
+        }
+
+        private NestClient client;
+
         [JsonProperty("structure_id")]
         public string StructureID { get; set; }
 
