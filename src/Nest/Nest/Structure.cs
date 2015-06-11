@@ -19,7 +19,7 @@ namespace Nest
         [JsonProperty("structure_id")]
         public string StructureID { get; internal set; }
 
-        [JsonProperty("thermosats")]
+        [JsonProperty("thermostats")]
         public string[] ThermostatIDs { get; internal set; }
 
         public async Task<IEnumerable<Device>> GetDevicesAsync()
@@ -38,13 +38,20 @@ namespace Nest
         {
             var thermostats = new List<Thermostat>();
 
-            foreach (var thermostatID in this.ThermostatIDs)
+            if (this.ThermostatIDs == null)
             {
-                var thermostat = await this.client.GetThermostatAsync(thermostatID);
-                thermostats.Add(thermostat);
+                return thermostats;
             }
+            else
+            {
+                foreach (var thermostatID in this.ThermostatIDs)
+                {
+                    var thermostat = await this.client.GetThermostatAsync(thermostatID);
+                    thermostats.Add(thermostat);
+                }
 
-            return thermostats;
+                return thermostats;
+            }
         }
 
         [JsonProperty("smoke_co_alarms")]
@@ -54,13 +61,20 @@ namespace Nest
         {
             var smokeAlarms = new List<SmokeAlarm>();
 
-            foreach (var smokeAlarmID in this.SmokeAlarmIDs)
+            if (this.SmokeAlarmIDs == null)
             {
-                var smokeAlarm = await this.client.GetSmokeAlarmAsync(smokeAlarmID);
-                smokeAlarms.Add(smokeAlarm);
+                return smokeAlarms;
             }
+            else
+            {
+                foreach (var smokeAlarmID in this.SmokeAlarmIDs)
+                {
+                    var smokeAlarm = await this.client.GetSmokeAlarmAsync(smokeAlarmID);
+                    smokeAlarms.Add(smokeAlarm);
+                }
 
-            return smokeAlarms;
+                return smokeAlarms;
+            }
         }
 
         [JsonProperty("away")]

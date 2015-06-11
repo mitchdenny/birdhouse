@@ -12,15 +12,15 @@ namespace Nest.Tests
         {
             var client = new NestClient(TestConstants.AccessToken);
             var thermostats = await client.GetThermostatsAsync();
-            Assert.AreEqual(4, thermostats.Count);
+            Assert.AreEqual(3, thermostats.Count);
         }
 
         [TestMethod()]
-        public async Task GetSmokeAlarmsAsyncReturnsFourSmokeAlarms()
+        public async Task GetSmokeAlarmsAsyncReturnsTwoSmokeAlarms()
         {
             var client = new NestClient(TestConstants.AccessToken);
             var smokeAlarms = await client.GetSmokeAlarmsAsync();
-            Assert.AreEqual(4, smokeAlarms.Count);
+            Assert.AreEqual(2, smokeAlarms.Count);
         }
 
         [TestMethod()]
