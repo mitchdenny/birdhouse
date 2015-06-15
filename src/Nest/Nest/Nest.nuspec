@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>Nest</id>
+    <version>1.0.0.0</version>
+    <title>Nest</title>
+    <authors>Mitch Denny</authors>
+    <owners>Mitch Denny</owners>
+    <licenseUrl>http://github.com/mitchdenny/nest-pcl/LICENSE</licenseUrl>
+    <projectUrl>http://github.com/mitchdenny/nest-pcl/</projectUrl>
+    <iconUrl>http://github.com/mitchdenny/nest-pcl/favicon.ico</iconUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>This is a .NET portable class library wrapper around the Nest REST API.</description>
+    <releaseNotes>Initial release.</releaseNotes>
+    <copyright>Copyright 2015</copyright>
+    <tags>nest</tags>
+  </metadata>
+</package>
