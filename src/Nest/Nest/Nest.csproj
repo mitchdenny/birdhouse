@@ -61,7 +61,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Nest.nuspec" />
+    <None Include="Nest.nuspec">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup />
@@ -74,8 +76,8 @@
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
-  </Target>
+  </Target> -->
   <Target Name="AfterBuild">
+    <Exec Command="..\packages\NuGet.CommandLine.2.8.5\tools\NuGet.exe pack $(OutDir)\Nest.nuspec -OutputDirectory $(OutDir)" />
   </Target>
-  -->
 </Project>

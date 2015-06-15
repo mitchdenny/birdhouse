@@ -14,5 +14,15 @@
     <releaseNotes>Initial release.</releaseNotes>
     <copyright>Copyright 2015</copyright>
     <tags>nest</tags>
+    <dependencies>
+      <dependency id="Microsoft.Bcl" version="1.1.10" />
+      <dependency id="Microsoft.Bcl.Build" version="1.0.14" />
+      <dependency id="Microsoft.Net.Http" version="2.2.29" />
+      <dependency id="Newtonsoft.Json" version="6.0.8" />
+    </dependencies>
+
   </metadata>
+  <files>
+    <file src="Nest.dll" target="lib"/>
+  </files>
 </package>
