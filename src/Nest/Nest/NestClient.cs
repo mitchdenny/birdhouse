@@ -1,5 +1,6 @@
 ﻿using Nest.Converters;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -24,6 +25,7 @@ namespace Nest
             this.serializer.Converters.Add(new ThermostatConverter(this));
             this.serializer.Converters.Add(new SmokeAlarmConverter(this));
             this.serializer.Converters.Add(new StructureConverter(this));
+            this.serializer.Converters.Add(new StringEnumConverter());
         }
 
         private string accessToken;

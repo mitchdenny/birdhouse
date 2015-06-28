@@ -38,7 +38,7 @@ namespace Nest
         public bool CanCool { get; internal set; }
 
         [JsonProperty("hvac_mode")]
-        public string HvacMode { get; internal set; }
+        public HvacMode HvacMode { get; internal set; }
 
         [JsonProperty("target_temperature_c")]
         public float TargetTemperatureCelsius { get; internal set; }
