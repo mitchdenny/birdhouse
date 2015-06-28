@@ -43,6 +43,7 @@
     <Compile Include="Converters\SmokeAlarmConverter.cs" />
     <Compile Include="Structure.cs" />
     <Compile Include="Converters\StructureConverter.cs" />
+    <Compile Include="TemperatureScale.cs" />
     <Compile Include="Thermostat.cs" />
     <Compile Include="Converters\ThermostatConverter.cs" />
     <Compile Include="Where.cs" />

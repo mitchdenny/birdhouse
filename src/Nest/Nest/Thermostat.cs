@@ -20,7 +20,7 @@ namespace Nest
         public float Humidity { get; internal set; }
 
         [JsonProperty("temperature_scale")]
-        public string TemperatureScale { get; internal set; }
+        public TemperatureScale TemperatureScale { get; internal set; }
 
         [JsonProperty("is_using_emergency_heat")]
         public bool IsUsingEmergencyHeat { get; internal set; }
@@ -68,13 +68,13 @@ namespace Nest
         public float AwayTemperatureHighCelsius { get; internal set; }
 
         [JsonProperty("away_temperature_low_c")]
-        public string AwayTemperatureLowCelsius { get; internal set; }
+        public float AwayTemperatureLowCelsius { get; internal set; }
 
         [JsonProperty("away_temperature_high_f")]
-        public string AwayTemperatureHighFahrenheit { get; internal set; }
+        public float AwayTemperatureHighFahrenheit { get; internal set; }
 
         [JsonProperty("away_temperature_low_f")]
-        public string AwayTemperatureLowFahrenheit { get; internal set; }
+        public float AwayTemperatureLowFahrenheit { get; internal set; }
 
         [JsonProperty("fan_timer_active")]
         public bool FanTimerActive { get; internal set; }
