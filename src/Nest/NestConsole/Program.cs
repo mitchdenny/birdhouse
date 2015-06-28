@@ -46,7 +46,7 @@ namespace NestConsole
             var client = new NestClient(accessToken);
 
             var thermostats = Task.Run(() => client.GetThermostatsAsync()).Result;
-            var smokeAlarms = Task.Run(() => client.GetSmokeAlarmsAsync()).Result;
+            var smokeAlarms = Task.Run(() => client.GetProtectsAsync()).Result;
             var structures = Task.Run(() => client.GetStructuresAsync()).Result;
 
             foreach (var item in thermostats)
@@ -57,7 +57,7 @@ namespace NestConsole
 
             foreach (var item in smokeAlarms)
             {
-                var smokeAlarm = Task.Run(() => client.GetSmokeAlarmAsync(item.Key).Result).Result;
+                var smokeAlarm = Task.Run(() => client.GetProtectAsync(item.Key).Result).Result;
                 Console.WriteLine("Smoke Alarm: {0}", smokeAlarm.DeviceID);
             }
 

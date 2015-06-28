@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Nest.Converters
 {
-    internal class SmokeAlarmConverter : CustomCreationConverter<SmokeAlarm>
+    internal class SmokeAlarmConverter : CustomCreationConverter<Protect>
     {
         public SmokeAlarmConverter(NestClient client)
         {
@@ -16,9 +16,9 @@ namespace Nest.Converters
 
         private NestClient client;
 
-        public override SmokeAlarm Create(Type objectType)
+        public override Protect Create(Type objectType)
         {
-            return new SmokeAlarm(this.client);
+            return new Protect(this.client);
         }
     }
 }

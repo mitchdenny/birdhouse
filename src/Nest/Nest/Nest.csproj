@@ -34,19 +34,24 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Away.cs" />
+    <Compile Include="BatteryHealth.cs" />
+    <Compile Include="CoAlarmState.cs" />
     <Compile Include="Device.cs" />
     <Compile Include="Eta.cs" />
     <Compile Include="HvacMode.cs" />
     <Compile Include="HvacState.cs" />
     <Compile Include="NestClient.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SmokeAlarm.cs" />
+    <Compile Include="Protect.cs" />
     <Compile Include="Converters\SmokeAlarmConverter.cs" />
+    <Compile Include="SmokeAlarmState.cs" />
     <Compile Include="Structure.cs" />
     <Compile Include="Converters\StructureConverter.cs" />
     <Compile Include="TemperatureScale.cs" />
     <Compile Include="Thermostat.cs" />
     <Compile Include="Converters\ThermostatConverter.cs" />
+    <Compile Include="UIColorState.cs" />
     <Compile Include="Where.cs" />
   </ItemGroup>
   <ItemGroup>

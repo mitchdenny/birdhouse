@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace Nest
 {
-    public class SmokeAlarm : Device
+    public class Protect : Device
     {
-        internal SmokeAlarm(NestClient client) : base(client)
+        internal Protect(NestClient client) : base(client)
         {
             this.client = client;
         }
@@ -17,16 +17,16 @@ namespace Nest
         private NestClient client;
 
         [JsonProperty("battery_health")]
-        public string BatteryHealth { get; internal set; }
+        public BatteryHealth BatteryHealth { get; internal set; }
 
         [JsonProperty("co_alarm_state")]
-        public string CoAlarmState { get; internal set; }
+        public CoAlarmState CoAlarmState { get; internal set; }
 
         [JsonProperty("smoke_alarm_state")]
-        public string SmokeAlarmState { get; internal set; }
+        public SmokeAlarmState SmokeAlarmState { get; internal set; }
 
         [JsonProperty("ui_color_state")]
-        public string UiColorState { get; internal set; }
+        public UIColorState UiColorState { get; internal set; }
 
         [JsonProperty("is_manual_test_active")]
         public bool IsManualTestActive { get; internal set; }

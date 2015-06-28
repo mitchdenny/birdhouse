@@ -14,7 +14,7 @@ namespace Nest
     public class NestClient
     {
         private const string ThermostatsQuery = "https://developer-api.nest.com/devices/thermostats/{0}?auth={1}";
-        private const string SmokeAlarmsQuery = "https://developer-api.nest.com/devices/smoke_co_alarms/{0}?auth={1}";
+        private const string ProtectsQuery = "https://developer-api.nest.com/devices/smoke_co_alarms/{0}?auth={1}";
         private const string StructuresQuery = "https://developer-api.nest.com/structures/{0}?auth={1}";
 
         public NestClient(string accessToken)
@@ -34,39 +34,39 @@ namespace Nest
         private async Task<JToken> GetPayloadAsync(string url)
         {
             var client = new HttpClient();
-            var response = await client.GetAsync(url);
+            var pendingResponse = client.GetAsync(url);
 
-            var payloadAsString = await response.Content.ReadAsStringAsync();
-            var payload = JToken.Parse(payloadAsString);
+            var pendingPayloadAsString = (await pendingResponse).Content.ReadAsStringAsync();
+            var payload = JToken.Parse(await pendingPayloadAsString);
             return payload;
         }
 
         internal async Task<T> GetItemAsync<T>(string url) where T: class
         {
-            var payload = await this.GetPayloadAsync(url);
+            var pendingPayload = this.GetPayloadAsync(url);
 
-            if (payload.Count() < 1)
+            if ((await pendingPayload).Count() < 1)
             {
                 return null;
             }
             else
             {
-                var entity = payload.ToObject<T>(this.serializer);
+                var entity = (await pendingPayload).ToObject<T>(this.serializer);
                 return entity;
             }
         }
 
         internal async Task<Dictionary<string, T>> GetItemsAsync<T>(string url)
         {
-            var payload = await this.GetPayloadAsync(url);
+            var pendingPayload = this.GetPayloadAsync(url);
 
-            if (payload.Count() < 1)
+            if ((await pendingPayload).Count() < 1)
             {
                 return null;
             }
             else
             {
-                var entities = payload.ToObject<Dictionary<string, T>>(this.serializer);
+                var entities = (await pendingPayload).ToObject<Dictionary<string, T>>(this.serializer);
                 return entities;
             }
         }
@@ -74,43 +74,55 @@ namespace Nest
         public async Task<Dictionary<string, Thermostat>> GetThermostatsAsync()
         {
             var thermostatsUrl = string.Format(NestClient.ThermostatsQuery, null, this.accessToken);
-            var thermostats = await this.GetItemsAsync<Thermostat>(thermostatsUrl);
-            return thermostats;
+            var pendingThermostats = this.GetItemsAsync<Thermostat>(thermostatsUrl);
+            return await pendingThermostats;
         }
 
         public async Task<Thermostat> GetThermostatAsync(string thermostatID)
         {
             var thermostatsUrl = string.Format(NestClient.ThermostatsQuery, thermostatID, this.accessToken);
-            var thermostat = await this.GetItemAsync<Thermostat>(thermostatsUrl);
-            return thermostat;
+            var pendingThermostat = this.GetItemAsync<Thermostat>(thermostatsUrl);
+            return await pendingThermostat;
         }
 
-        public async Task<Dictionary<string, SmokeAlarm>> GetSmokeAlarmsAsync()
+        public async Task<Dictionary<string, Protect>> GetProtectsAsync()
         {
-            var smokeAlarmsUrl = string.Format(NestClient.SmokeAlarmsQuery, null, this.accessToken);
-            var smokeAlarms = await this.GetItemsAsync<SmokeAlarm>(smokeAlarmsUrl);
-            return smokeAlarms;
+            var protectsUrl = string.Format(NestClient.ProtectsQuery, null, this.accessToken);
+            var pendingProtects = this.GetItemsAsync<Protect>(protectsUrl);
+            return await pendingProtects;
         }
 
-        public async Task<SmokeAlarm> GetSmokeAlarmAsync(string smokeAlarmID)
+        public async Task<Protect> GetProtectAsync(string protectID)
         {
-            var smokeAlarmsUrl = string.Format(NestClient.SmokeAlarmsQuery, smokeAlarmID, this.accessToken);
-            var smokeAlarm = await this.GetItemAsync<SmokeAlarm>(smokeAlarmsUrl);
-            return smokeAlarm;
+            var protectsUrl = string.Format(NestClient.ProtectsQuery, protectID, this.accessToken);
+            var pendingProtect = this.GetItemAsync<Protect>(protectsUrl);
+            return await pendingProtect;
         }
 
         public async Task<Dictionary<string, Structure>> GetStructuresAsync()
         {
             var structuresUrl = string.Format(NestClient.StructuresQuery, null, this.accessToken);
-            var structures = await this.GetItemsAsync<Structure>(structuresUrl);
-            return structures;
+            var pendingStructures = this.GetItemsAsync<Structure>(structuresUrl);
+            return await pendingStructures;
         }
 
         public async Task<Structure> GetStructureAsync(string structureID)
         {
             var structuresUrl = string.Format(NestClient.StructuresQuery, structureID, this.accessToken);
-            var structure = await this.GetItemAsync<Structure>(structuresUrl);
-            return structure;
+            var pendingStructure = this.GetItemAsync<Structure>(structuresUrl);
+            return await pendingStructure;
+        }
+
+        public async Task<Dictionary<string, Device>> GetDevicesAsync()
+        {
+            var pendingThermostats = this.GetThermostatsAsync();
+            var pendingProtects = this.GetProtectsAsync();
+
+            var devices = new List<Device>();
+            devices.AddRange((await pendingThermostats).Values);
+            devices.AddRange((await pendingProtects).Values);
+
+            return devices.ToDictionary(device => device.DeviceID);
         }
     }
 }

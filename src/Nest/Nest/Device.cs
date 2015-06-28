@@ -30,8 +30,8 @@ namespace Nest
 
         public async Task<Where> GetWhereAsync()
         {
-            var structure = await this.GetStructureAsync();
-            var where = structure.Wheres[this.WhereID];
+            var pendingStructure = this.GetStructureAsync();
+            var where = (await pendingStructure).Wheres[this.WhereID];
             return where;
         }
 
@@ -43,8 +43,8 @@ namespace Nest
 
         public async Task<Structure> GetStructureAsync()
         {
-            var structure = await this.client.GetStructureAsync(this.StructureID);
-            return structure;
+            var pendingStructure = this.client.GetStructureAsync(this.StructureID);
+            return await pendingStructure;
         }
 
         [JsonProperty("name_long")]

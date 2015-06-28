@@ -15,6 +15,7 @@ namespace Nest
         }
 
         private NestClient client;
+        private string thermostat;
 
         [JsonProperty("structure_id")]
         public string StructureID { get; internal set; }
@@ -22,21 +23,21 @@ namespace Nest
         [JsonProperty("thermostats")]
         public string[] ThermostatIDs { get; internal set; }
 
-        public async Task<IEnumerable<Device>> GetDevicesAsync()
+        public async Task<Dictionary<string, Device>> GetDevicesAsync()
         {
-            var thermostats = await this.GetThermosatsAsync();
-            var smokeAlarms = await this.GetSmokeAlarmsAsync();
+            var pendingThermostats = this.GetThermosatsAsync();
+            var pendingProtects = this.GetProtectsAsync();
 
             var devices = new List<Device>();
-            devices.AddRange(thermostats);
-            devices.AddRange(smokeAlarms);
+            devices.AddRange((await pendingThermostats).Values);
+            devices.AddRange((await pendingProtects).Values);
 
-            return devices;
+            return devices.ToDictionary(device => device.DeviceID);
         }
 
-        public async Task<IEnumerable<Thermostat>> GetThermosatsAsync()
+        public async Task<Dictionary<string, Thermostat>> GetThermosatsAsync()
         {
-            var thermostats = new List<Thermostat>();
+            var thermostats = new Dictionary<string, Thermostat>();
 
             if (this.ThermostatIDs == null)
             {
@@ -46,8 +47,8 @@ namespace Nest
             {
                 foreach (var thermostatID in this.ThermostatIDs)
                 {
-                    var thermostat = await this.client.GetThermostatAsync(thermostatID);
-                    thermostats.Add(thermostat);
+                    var pendingThermostat = this.client.GetThermostatAsync(thermostatID);
+                    thermostats.Add((await pendingThermostat).DeviceID, (await pendingThermostat));
                 }
 
                 return thermostats;
@@ -55,30 +56,30 @@ namespace Nest
         }
 
         [JsonProperty("smoke_co_alarms")]
-        public string[] SmokeAlarmIDs { get; internal set; }
+        public string[] ProtectIDs { get; internal set; }
 
-        public async Task<IEnumerable<SmokeAlarm>> GetSmokeAlarmsAsync()
+        public async Task<Dictionary<string, Protect>> GetProtectsAsync()
         {
-            var smokeAlarms = new List<SmokeAlarm>();
+            var protects = new Dictionary<string, Protect>();
 
-            if (this.SmokeAlarmIDs == null)
+            if (this.ProtectIDs == null)
             {
-                return smokeAlarms;
+                return protects;
             }
             else
             {
-                foreach (var smokeAlarmID in this.SmokeAlarmIDs)
+                foreach (var protectID in this.ProtectIDs)
                 {
-                    var smokeAlarm = await this.client.GetSmokeAlarmAsync(smokeAlarmID);
-                    smokeAlarms.Add(smokeAlarm);
+                    var pendingProtect = this.client.GetProtectAsync(protectID);
+                    protects.Add((await pendingProtect).DeviceID, (await pendingProtect));
                 }
 
-                return smokeAlarms;
+                return protects;
             }
         }
 
         [JsonProperty("away")]
-        public string Away { get; internal set; }
+        public Away Away { get; internal set; }
 
         [JsonProperty("name")]
         public string Name { get; internal set; }
@@ -97,9 +98,6 @@ namespace Nest
 
         [JsonProperty("time_zone")]
         public string TimeZone { get; internal set; }
-
-        [JsonProperty("eta")]
-        public Eta Eta { get; internal set; }
 
         [JsonProperty("wheres")]
         public Dictionary<string, Where> Wheres { get; internal set; }

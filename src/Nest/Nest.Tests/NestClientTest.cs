@@ -16,11 +16,11 @@ namespace Nest.Tests
         }
 
         [TestMethod()]
-        public async Task GetSmokeAlarmsAsyncReturnsTwoSmokeAlarms()
+        public async Task GetProtectsAsyncReturnsTwoProtects()
         {
             var client = new NestClient(TestConstants.AccessToken);
-            var smokeAlarms = await client.GetSmokeAlarmsAsync();
-            Assert.AreEqual(2, smokeAlarms.Count);
+            var protects = await client.GetProtectsAsync();
+            Assert.AreEqual(2, protects.Count);
         }
 
         [TestMethod()]
@@ -29,6 +29,14 @@ namespace Nest.Tests
             var client = new NestClient(TestConstants.AccessToken);
             var structures = await client.GetStructuresAsync();
             Assert.AreEqual(2, structures.Count);
+        }
+
+        [TestMethod()]
+        public async Task GetDevicesAsyncReturnsFiveDevices()
+        {
+            var client = new NestClient(TestConstants.AccessToken);
+            var devices = await client.GetDevicesAsync();
+            Assert.AreEqual(5, devices.Count);
         }
     }
 }
