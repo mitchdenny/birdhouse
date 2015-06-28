@@ -37,6 +37,7 @@
     <Compile Include="Device.cs" />
     <Compile Include="Eta.cs" />
     <Compile Include="HvacMode.cs" />
+    <Compile Include="HvacState.cs" />
     <Compile Include="NestClient.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SmokeAlarm.cs" />

@@ -83,6 +83,6 @@ namespace Nest
         public DateTimeOffset LastConnection { get; internal set; }
 
         [JsonProperty("hvac_state")]
-        public string HvacState { get; internal set; }
+        public HvacState HvacState { get; internal set; }
     }
 }
