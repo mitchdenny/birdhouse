@@ -42,6 +42,7 @@
     <Compile Include="HvacMode.cs" />
     <Compile Include="HvacState.cs" />
     <Compile Include="NestClient.cs" />
+    <Compile Include="NestClientException.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Protect.cs" />
     <Compile Include="Converters\SmokeAlarmConverter.cs" />

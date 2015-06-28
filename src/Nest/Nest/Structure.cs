@@ -9,6 +9,8 @@ namespace Nest
 {
     public class Structure
     {
+        private const string UpdateEtaQuery = "https://developer-api.nest.com/structures/{0}/eta.json?auth={1}";
+
         internal Structure(NestClient client)
         {
             this.client = client;
@@ -101,5 +103,18 @@ namespace Nest
 
         [JsonProperty("wheres")]
         public Dictionary<string, Where> Wheres { get; internal set; }
+
+        public async Task UpdateEtaAsync(string tripID, DateTimeOffset estimatedArrivalWindowBegin, DateTimeOffset estimatedArrivalWindowEnd)
+        {
+            var eta = new Eta()
+            {
+                TripID = tripID,
+                EstimatedArrivalWindowBegin = estimatedArrivalWindowBegin,
+                EstimatedArrivalWindowEnd = estimatedArrivalWindowEnd
+            };
+
+            var url = string.Format(Structure.UpdateEtaQuery, this.StructureID, this.client.AccessToken);
+            await this.client.PutItemAsync(url, eta);
+        }
     }
 }

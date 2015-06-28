@@ -4,7 +4,9 @@ using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
@@ -19,7 +21,7 @@ namespace Nest
 
         public NestClient(string accessToken)
         {
-            this.accessToken = accessToken;
+            this.AccessToken = accessToken;
             
             this.serializer = new JsonSerializer();
             this.serializer.Converters.Add(new ThermostatConverter(this));
@@ -28,7 +30,7 @@ namespace Nest
             this.serializer.Converters.Add(new StringEnumConverter());
         }
 
-        private string accessToken;
+        internal string AccessToken { get; set; }
         private JsonSerializer serializer;
 
         private async Task<JToken> GetPayloadAsync(string url)
@@ -41,7 +43,44 @@ namespace Nest
             return payload;
         }
 
-        internal async Task<T> GetItemAsync<T>(string url) where T: class
+        private async Task SendPayloadAsync(string method, string url, string payload)
+        {
+            var content = new StringContent(payload);
+            var requestMessage = new HttpRequestMessage(new HttpMethod(method), url);
+            requestMessage.Content = content;
+
+            var client = new HttpClient();
+            var pendingResponse = client.SendAsync(requestMessage);
+            var response = await pendingResponse;
+
+            if (response.StatusCode != HttpStatusCode.OK)
+            {
+                throw new NestClientException(
+                    response.ReasonPhrase
+                    );
+            }
+        }
+
+        internal async Task PutItemAsync<T>(string url, T item)
+        {
+            using (var writer = new StringWriter())
+            {
+                this.serializer.Serialize(writer, item);
+                var payload = writer.ToString();
+                await this.SendPayloadAsync("PUT", url, payload);
+            }
+        }
+        internal async Task PatchItemAsync<T>(string url, T item)
+        {
+            using (var writer = new StringWriter())
+            {
+                this.serializer.Serialize(writer, item);
+                var payload = writer.ToString();
+                await this.SendPayloadAsync("PATCH", url, payload);
+            }
+        }
+
+        private async Task<T> GetItemAsync<T>(string url) where T: class
         {
             var pendingPayload = this.GetPayloadAsync(url);
 
@@ -56,7 +95,7 @@ namespace Nest
             }
         }
 
-        internal async Task<Dictionary<string, T>> GetItemsAsync<T>(string url)
+        private async Task<Dictionary<string, T>> GetItemsAsync<T>(string url)
         {
             var pendingPayload = this.GetPayloadAsync(url);
 
@@ -73,42 +112,42 @@ namespace Nest
 
         public async Task<Dictionary<string, Thermostat>> GetThermostatsAsync()
         {
-            var thermostatsUrl = string.Format(NestClient.ThermostatsQuery, null, this.accessToken);
+            var thermostatsUrl = string.Format(NestClient.ThermostatsQuery, null, this.AccessToken);
             var pendingThermostats = this.GetItemsAsync<Thermostat>(thermostatsUrl);
             return await pendingThermostats;
         }
 
         public async Task<Thermostat> GetThermostatAsync(string thermostatID)
         {
-            var thermostatsUrl = string.Format(NestClient.ThermostatsQuery, thermostatID, this.accessToken);
+            var thermostatsUrl = string.Format(NestClient.ThermostatsQuery, thermostatID, this.AccessToken);
             var pendingThermostat = this.GetItemAsync<Thermostat>(thermostatsUrl);
             return await pendingThermostat;
         }
 
         public async Task<Dictionary<string, Protect>> GetProtectsAsync()
         {
-            var protectsUrl = string.Format(NestClient.ProtectsQuery, null, this.accessToken);
+            var protectsUrl = string.Format(NestClient.ProtectsQuery, null, this.AccessToken);
             var pendingProtects = this.GetItemsAsync<Protect>(protectsUrl);
             return await pendingProtects;
         }
 
         public async Task<Protect> GetProtectAsync(string protectID)
         {
-            var protectsUrl = string.Format(NestClient.ProtectsQuery, protectID, this.accessToken);
+            var protectsUrl = string.Format(NestClient.ProtectsQuery, protectID, this.AccessToken);
             var pendingProtect = this.GetItemAsync<Protect>(protectsUrl);
             return await pendingProtect;
         }
 
         public async Task<Dictionary<string, Structure>> GetStructuresAsync()
         {
-            var structuresUrl = string.Format(NestClient.StructuresQuery, null, this.accessToken);
+            var structuresUrl = string.Format(NestClient.StructuresQuery, null, this.AccessToken);
             var pendingStructures = this.GetItemsAsync<Structure>(structuresUrl);
             return await pendingStructures;
         }
 
         public async Task<Structure> GetStructureAsync(string structureID)
         {
-            var structuresUrl = string.Format(NestClient.StructuresQuery, structureID, this.accessToken);
+            var structuresUrl = string.Format(NestClient.StructuresQuery, structureID, this.AccessToken);
             var pendingStructure = this.GetItemAsync<Structure>(structuresUrl);
             return await pendingStructure;
         }

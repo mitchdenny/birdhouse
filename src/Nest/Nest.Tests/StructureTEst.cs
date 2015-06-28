@@ -27,5 +27,17 @@ namespace Nest.Tests
 
             Assert.AreEqual(4, devices.Count());
         }
+
+        [TestMethod]
+        public async Task UpdateEtaAsyncDoesntFail()
+        {
+            var client = new NestClient(TestConstants.AccessToken);
+            var structure = await client.GetStructureAsync(TestConstants.HouseStructureID);
+            await structure.UpdateEtaAsync(
+                Guid.NewGuid().ToString(),
+                DateTimeOffset.Now.AddMinutes(10),
+                DateTimeOffset.Now.AddMinutes(20)
+                );
+        }
     }
 }

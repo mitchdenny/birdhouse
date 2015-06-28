@@ -9,6 +9,8 @@ namespace Nest
 {
     public class Thermostat : Device
     {
+        private const string ThermostatQuery = "https://developer-api.nest.com/thermostats/{0}/.json?auth={1}";
+
         internal Thermostat(NestClient client) : base(client)
         {
             this.client = client;
@@ -84,5 +86,23 @@ namespace Nest
 
         [JsonProperty("hvac_state")]
         public HvacState HvacState { get; internal set; }
+
+        public async Task UpdateFanTimerActiveAsync(bool isActive)
+        {
+            var url = string.Format(Thermostat.ThermostatQuery, this.DeviceID, this.client.AccessToken);
+            await client.PatchItemAsync(
+                url,
+                new { fan_timer_active = isActive }
+                );
+        }
+
+        public async Task UpdateHvacMode(HvacMode mode)
+        {
+            var url = string.Format(Thermostat.ThermostatQuery, this.DeviceID, this.client.AccessToken);
+            await client.PatchItemAsync(
+                url,
+                new { hvac_mode = mode }
+                );
+        }
     }
 }

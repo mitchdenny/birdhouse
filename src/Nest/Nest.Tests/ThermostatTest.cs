@@ -26,5 +26,20 @@ namespace Nest.Tests
 
             Assert.AreEqual("Downstairs", where.Name);
         }
+
+        [TestMethod()]
+        public async Task UpdateFanTimerActiveDoesntFail()
+        {
+            var client = new NestClient(TestConstants.AccessToken);
+            var thermostat = await client.GetThermostatAsync(TestConstants.DownstairsThermostatID);
+            await thermostat.UpdateFanTimerActiveAsync(false);
+        }
+
+        public async Task UpdateHvacModeAsyncDoesntFail()
+        {
+            var client = new NestClient(TestConstants.AccessToken);
+            var thermostat = await client.GetThermostatAsync(TestConstants.DownstairsThermostatID);
+            await thermostat.UpdateHvacMode(HvacMode.Off);
+        }
     }
 }

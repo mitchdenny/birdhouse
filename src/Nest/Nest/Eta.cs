@@ -9,6 +9,10 @@ namespace Nest
 {
     public class Eta
     {
+        internal Eta()
+        {
+        }
+
         [JsonProperty("trip_id")]
         public string TripID { get; internal set; }
 
