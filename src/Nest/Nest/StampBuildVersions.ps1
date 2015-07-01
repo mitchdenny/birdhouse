@@ -1,9 +1,11 @@
 param(
-	[string]$revision
+	[string]$buildnumber
 )
 
+$version = $buildnumber.Split("_")[1];
+
 $assemblyinfo = Get-Content src\Nest\Nest\Properties\AssemblyInfo.cs
-$assemblyinfo.Replace("0.9.0.0", "$revision") | Set-Content src\Nest\Nest\Properties\AssemblyInfo.cs
+$assemblyinfo.Replace("0.9.0.0", "$version") | Set-Content src\Nest\Nest\Properties\AssemblyInfo.cs
 
 $nuspec = Get-Content src\Nest\Nest\Nest.nuspec
-$nuspec.Replace("0.9.0.0", "$revision") | Set-Content src\Nest\Nest\Nest.nuspec
+$nuspec.Replace("0.9.0.0", "$version") | Set-Content src\Nest\Nest\Nest.nuspec
