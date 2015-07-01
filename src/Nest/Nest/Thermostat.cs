@@ -9,7 +9,7 @@ namespace Nest
 {
     public class Thermostat : Device
     {
-        private const string ThermostatQuery = "https://developer-api.nest.com/thermostats/{0}/.json?auth={1}";
+        private const string ThermostatQuery = "https://developer-api.nest.com/devices/thermostats/{0}/.json?auth={1}";
 
         internal Thermostat(NestClient client) : base(client)
         {
@@ -87,22 +87,87 @@ namespace Nest
         [JsonProperty("hvac_state")]
         public HvacState HvacState { get; internal set; }
 
+        public async Task UpdateHvacModeAsync(HvacMode mode)
+        {
+            var url = string.Format(Thermostat.ThermostatQuery, this.DeviceID, this.client.AccessToken);
+            await client.PatchItemAsync(
+                url,
+                this,
+                new { hvac_mode = mode }
+                );
+        }
         public async Task UpdateFanTimerActiveAsync(bool isActive)
         {
             var url = string.Format(Thermostat.ThermostatQuery, this.DeviceID, this.client.AccessToken);
             await client.PatchItemAsync(
                 url,
+                this,
                 new { fan_timer_active = isActive }
                 );
         }
 
-        public async Task UpdateHvacMode(HvacMode mode)
+        public async Task UpdateTargetTemperatureAsync(float target)
+        {
+            await UpdateTargetTemperatureAsync(target, this.TemperatureScale);
+        }
+
+        public async Task UpdateTargetTemperatureAsync(float target, TemperatureScale scale)
         {
             var url = string.Format(Thermostat.ThermostatQuery, this.DeviceID, this.client.AccessToken);
-            await client.PatchItemAsync(
-                url,
-                new { hvac_mode = mode }
-                );
+
+            switch (scale)
+            {
+                case TemperatureScale.Celsius:
+                    await client.PatchItemAsync(
+                        url,
+                        this,
+                        new { target_temperature_c = target }
+                        );
+                    break;
+
+                case TemperatureScale.Fahrenheit:
+                    await client.PatchItemAsync(
+                        url,
+                        this,
+                        new { target_temperature_f = target }
+                        );
+                    break;
+            }
+        }
+
+        public async Task UpdateTargetTemperatureAsync(float highTarget, float lowTarget)
+        {
+            await this.UpdateTargetTemperatureAsync(highTarget, lowTarget, this.TemperatureScale);
+        }
+
+        public async Task UpdateTargetTemperatureAsync(float highTarget, float lowTarget, TemperatureScale scale)
+        {
+            var url = string.Format(Thermostat.ThermostatQuery, this.DeviceID, this.client.AccessToken);
+
+            switch (scale)
+            {
+                case TemperatureScale.Celsius:
+                    await client.PatchItemAsync(
+                        url,
+                        this,
+                        new
+                        {
+                            target_temperature_high_c = highTarget,
+                            target_temperature_low_c = lowTarget
+                        });
+                    break;
+
+                case TemperatureScale.Fahrenheit:
+                    await client.PatchItemAsync(
+                        url,
+                        this,
+                        new
+                        {
+                            target_temperature_high_f = highTarget,
+                            target_temperature_low_f = lowTarget
+                        });
+                    break;
+            }
         }
     }
 }

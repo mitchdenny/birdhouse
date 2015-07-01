@@ -28,18 +28,53 @@ namespace Nest.Tests
         }
 
         [TestMethod()]
-        public async Task UpdateFanTimerActiveDoesntFail()
+        public async Task UpdateHvacModeAsyncAlternatesBetweenOffAndHeatCool()
         {
             var client = new NestClient(TestConstants.AccessToken);
             var thermostat = await client.GetThermostatAsync(TestConstants.DownstairsThermostatID);
-            await thermostat.UpdateFanTimerActiveAsync(false);
+
+            await thermostat.UpdateHvacModeAsync(HvacMode.Off);
+            Assert.AreEqual(HvacMode.Off, thermostat.HvacMode);
+
+            await thermostat.UpdateHvacModeAsync(HvacMode.HeatCool);
         }
 
-        public async Task UpdateHvacModeAsyncDoesntFail()
+        [TestMethod()]
+        public async Task UpdateFanTimerActiveAsyncAlternatesBetweenTrueAndFalse()
         {
             var client = new NestClient(TestConstants.AccessToken);
             var thermostat = await client.GetThermostatAsync(TestConstants.DownstairsThermostatID);
-            await thermostat.UpdateHvacMode(HvacMode.Off);
+            var originalState = thermostat.FanTimerActive;
+
+            await thermostat.UpdateFanTimerActiveAsync(!originalState);
+            Assert.AreEqual(!originalState, thermostat.FanTimerActive);
+        }
+        [TestMethod()]
+        public async Task UpdateTargetTemperatureSucceeds()
+        {
+            var client = new NestClient(TestConstants.AccessToken);
+            var thermostat = await client.GetThermostatAsync(TestConstants.UpstairsThermostatID);
+            var targetTemperature = thermostat.TargetTemperatureCelsius + 1;
+
+            await thermostat.UpdateTargetTemperatureAsync(targetTemperature, TemperatureScale.Celsius);
+            Assert.AreEqual(targetTemperature, thermostat.TargetTemperatureCelsius);
+
+            await thermostat.UpdateTargetTemperatureAsync(targetTemperature - 1, TemperatureScale.Celsius);
+        }
+
+        [TestMethod()]
+        public async Task UpdateTargetTemperatureHighLowSucceeds()
+        {
+            var client = new NestClient(TestConstants.AccessToken);
+            var thermostat = await client.GetThermostatAsync(TestConstants.DownstairsThermostatID);
+            var targetTemperatureHigh = thermostat.TargetTemperatureHighCelsius + 1;
+            var targetTemperatureLow = thermostat.TargetTemperatureLowCelsius + 1;
+
+            await thermostat.UpdateTargetTemperatureAsync(targetTemperatureHigh, targetTemperatureLow, TemperatureScale.Celsius);
+            Assert.AreEqual(targetTemperatureHigh, thermostat.TargetTemperatureHighCelsius);
+            Assert.AreEqual(targetTemperatureLow, thermostat.TargetTemperatureLowCelsius);
+
+            await thermostat.UpdateTargetTemperatureAsync(targetTemperatureHigh - 1, targetTemperatureLow - 1, TemperatureScale.Celsius);
         }
     }
 }

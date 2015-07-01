@@ -18,6 +18,11 @@ namespace Nest.Tests
             get { return "D2nS1Lh1wf8g9B1wU5C7t8_98vAruqHh"; }
         }
 
+        public static string UpstairsThermostatID
+        {
+            get { return "D2nS1Lh1wf9v2R8ES47mvc_98vAruqHh";  }
+        }
+
         public static string HouseStructureID
         {
             get { return "NT8KcS3mk9E2maQCGZoL9pWFCxRwQKcsyom6n-KjbwWKjKBoyYY-dA"; }

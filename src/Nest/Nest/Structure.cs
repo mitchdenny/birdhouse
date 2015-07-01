@@ -104,9 +104,17 @@ namespace Nest
         [JsonProperty("wheres")]
         public Dictionary<string, Where> Wheres { get; internal set; }
 
+        [JsonProperty("eta")]
+        public Eta Eta { get; internal set; }
+
         public async Task UpdateEtaAsync(string tripID, DateTimeOffset estimatedArrivalWindowBegin, DateTimeOffset estimatedArrivalWindowEnd)
         {
-            var eta = new Eta()
+            if (this.Eta == null)
+            {
+                this.Eta = new Eta();
+            }
+
+            var updatedEta = new Eta()
             {
                 TripID = tripID,
                 EstimatedArrivalWindowBegin = estimatedArrivalWindowBegin,
@@ -114,7 +122,7 @@ namespace Nest
             };
 
             var url = string.Format(Structure.UpdateEtaQuery, this.StructureID, this.client.AccessToken);
-            await this.client.PutItemAsync(url, eta);
+            await this.client.PutItemAsync(url, this.Eta, updatedEta);
         }
     }
 }

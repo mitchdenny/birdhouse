@@ -36,47 +36,74 @@ namespace Nest
         private async Task<JToken> GetPayloadAsync(string url)
         {
             var client = new HttpClient();
-            var pendingResponse = client.GetAsync(url);
+            var response = await client.GetAsync(url);
 
-            var pendingPayloadAsString = (await pendingResponse).Content.ReadAsStringAsync();
-            var payload = JToken.Parse(await pendingPayloadAsString);
-            return payload;
+            if (response.StatusCode == HttpStatusCode.OK)
+            {
+                var pendingPayloadAsString = response.Content.ReadAsStringAsync();
+                var payload = JToken.Parse(await pendingPayloadAsString);
+                return payload;
+            }
+            else
+            {
+                var exception = await this.BuildExceptionFromResponse(response);
+                throw exception;
+            }
         }
 
-        private async Task SendPayloadAsync(string method, string url, string payload)
+        private async Task ExecuteRequestAsync(string method, string url, string requestPayload, object entity)
         {
-            var content = new StringContent(payload);
+            var requestContent = new StringContent(requestPayload);
             var requestMessage = new HttpRequestMessage(new HttpMethod(method), url);
-            requestMessage.Content = content;
+            requestMessage.Content = requestContent;
 
             var client = new HttpClient();
             var pendingResponse = client.SendAsync(requestMessage);
             var response = await pendingResponse;
 
-            if (response.StatusCode != HttpStatusCode.OK)
+            if (response.StatusCode == HttpStatusCode.OK)
             {
-                throw new NestClientException(
-                    response.ReasonPhrase
-                    );
+                var responseStream = await response.Content.ReadAsStreamAsync();
+                using (var reader = new StreamReader(responseStream))
+                {
+                    this.serializer.Populate(reader, entity);
+                }
+            }
+            else
+            {
+                var exception = await this.BuildExceptionFromResponse(response);
+                throw exception;
             }
         }
 
-        internal async Task PutItemAsync<T>(string url, T item)
+        private async Task<NestClientException> BuildExceptionFromResponse(HttpResponseMessage response)
         {
-            using (var writer = new StringWriter())
+            var errorResponseStream = await response.Content.ReadAsStreamAsync();
+
+            using (var reader = new StreamReader(errorResponseStream))
+            using (var jsonReader = new JsonTextReader(reader))
             {
-                this.serializer.Serialize(writer, item);
-                var payload = writer.ToString();
-                await this.SendPayloadAsync("PUT", url, payload);
+                var error = this.serializer.Deserialize<NestClientError>(jsonReader);
+                return new NestClientException(error.ErrorMessage, response);
             }
         }
-        internal async Task PatchItemAsync<T>(string url, T item)
+
+        internal async Task PutItemAsync<T>(string url, object entity, T change)
         {
             using (var writer = new StringWriter())
             {
-                this.serializer.Serialize(writer, item);
+                this.serializer.Serialize(writer, change);
                 var payload = writer.ToString();
-                await this.SendPayloadAsync("PATCH", url, payload);
+                await this.ExecuteRequestAsync("PUT", url, payload, entity);
+            }
+        }
+        internal async Task PatchItemAsync<T>(string url, object entity, T change)
+        {
+            using (var writer = new StringWriter())
+            {
+                this.serializer.Serialize(writer, change);
+                var payload = writer.ToString();
+                await this.ExecuteRequestAsync("PATCH", url, payload, entity);
             }
         }
 

@@ -32,7 +32,7 @@ namespace Nest.Tests
         public async Task UpdateEtaAsyncDoesntFail()
         {
             var client = new NestClient(TestConstants.AccessToken);
-            var structure = await client.GetStructureAsync(TestConstants.HouseStructureID);
+            var structure = await client.GetStructureAsync(TestConstants.OfficeStructureID);
             await structure.UpdateEtaAsync(
                 Guid.NewGuid().ToString(),
                 DateTimeOffset.Now.AddMinutes(10),
