@@ -17,7 +17,6 @@ namespace Nest
         }
 
         private NestClient client;
-        private string thermostat;
 
         [JsonProperty("structure_id")]
         public string StructureID { get; internal set; }
