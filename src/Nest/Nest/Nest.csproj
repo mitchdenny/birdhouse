@@ -75,6 +75,7 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="packages.config" />
+    <None Include="PushPackage.ps1" />
     <None Include="StampBuildVersions.ps1" />
   </ItemGroup>
   <ItemGroup />
