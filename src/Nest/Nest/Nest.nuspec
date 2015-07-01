@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>Nest</id>
-    <version>1.0.0.0</version>
+    <version>0.9.0.0</version>
     <title>Nest</title>
     <authors>Mitch Denny</authors>
     <owners>Mitch Denny</owners>
@@ -23,6 +23,6 @@
 
   </metadata>
   <files>
-    <file src="Nest.dll" target="lib"/>
+    <file src="Nest.dll" target="lib" />
   </files>
 </package>
