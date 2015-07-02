@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>Birdhouse</id>
+    <version>0.9.0.0-preview</version>
+    <title>Nest</title>
+    <authors>Mitch Denny</authors>
+    <owners>Mitch Denny</owners>
+    <licenseUrl>http://github.com/mitchdenny/birdhouse/LICENSE</licenseUrl>
+    <projectUrl>http://github.com/mitchdenny/birdhouse/</projectUrl>
+    <iconUrl>http://github.com/mitchdenny/birdhouse/favicon.ico</iconUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Birdhouse is a .NET Portable Class Library which provides a convinient wrapper around the Nest REST API which is used for interacting with Nest thermostats and smoke detectors.</description>
+    <releaseNotes>This is the initial release of the Birdhouse library. It supports reading data from Nest thermostats and smoke/co detectors along with structure data. The API also supports updating a number of read/write values. Event streaming is not presently supported.</releaseNotes>
+    <copyright>Copyright 2015</copyright>
+    <tags>nest</tags>
+    <dependencies>
+      <dependency id="Microsoft.Bcl" version="1.1.10" />
+      <dependency id="Microsoft.Bcl.Build" version="1.0.14" />
+      <dependency id="Microsoft.Net.Http" version="2.2.29" />
+      <dependency id="Newtonsoft.Json" version="6.0.8" />
+    </dependencies>
+
+  </metadata>
+  <files>
+    <file src="Birdhouse.dll" target="lib" />
+  </files>
+</package>
