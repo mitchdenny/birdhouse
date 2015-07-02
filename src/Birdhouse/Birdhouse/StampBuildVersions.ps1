@@ -5,7 +5,7 @@ param(
 
 $semanticversion = $buildnumber.Split("_")[1];
 
-$assemblyversion = $semanticversion.Replace("-build","")
+$assemblyversion = $semanticversion.Replace("-build",".")
 $assemblyinfo = Get-Content src\Birdhouse\Birdhouse\Properties\AssemblyInfo.cs
 $assemblyinfo.Replace("0.9.0.0", "$assemblyversion") | Set-Content src\Birdhouse\Birdhouse\Properties\AssemblyInfo.cs
 
