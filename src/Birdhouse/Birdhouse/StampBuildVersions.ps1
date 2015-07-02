@@ -9,7 +9,7 @@ $assemblyversion = $semanticversion.Replace("-build",".")
 $assemblyinfo = Get-Content src\Birdhouse\Birdhouse\Properties\AssemblyInfo.cs
 $assemblyinfo.Replace("0.9.0.0", "$assemblyversion") | Set-Content src\Birdhouse\Birdhouse\Properties\AssemblyInfo.cs
 
-if ($buildmetadata -ne $null) {
+if ($buildmetadata -eq "") {
 	$nuspecversion = $semanticversion.Replace("build", $buildmetadata)
 }
 else {
