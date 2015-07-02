@@ -1,6 +1,6 @@
 param(
 	[string]$buildnumber,
-	[bool]$ispreview
+	[string]$buildmetadata
 )
 
 $semanticversion = $buildnumber.Split("_")[1];
