@@ -10,10 +10,10 @@ $assemblyinfo = Get-Content src\Birdhouse\Birdhouse\Properties\AssemblyInfo.cs
 $assemblyinfo.Replace("0.9.0.0", "$assemblyversion") | Set-Content src\Birdhouse\Birdhouse\Properties\AssemblyInfo.cs
 
 if ($ispreview) {
-	$nuspecversion = $semanticversion.Split("-")[0];
+	$nuspecversion = $semanticversion.Replace("-build", "-preview")
 }
 else {
-	$nuspecversion = $semanticversion
+	$nuspecversion = $semanticversion.Split("-")[0];
 }
 
 $nuspec = Get-Content src\Birdhouse\Birdhouse\Birdhouse.nuspec
