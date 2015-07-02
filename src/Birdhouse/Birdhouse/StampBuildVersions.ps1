@@ -16,5 +16,7 @@ else {
 	$nuspecversion = $semanticversion.Split("-")[0];
 }
 
+Write-Output "Nuspec version will be: $nuspecversion"
+
 $nuspec = Get-Content src\Birdhouse\Birdhouse\Birdhouse.nuspec
 $nuspec.Replace("0.9.0-developer", "$nuspecversion") | Set-Content src\Birdhouse\Birdhouse\Birdhouse.nuspec
