@@ -5,12 +5,12 @@ param(
 
 $semanticversion = $buildnumber.Split("_")[1];
 
-$assemblyversion = $semanticversion.Replace("-build",".")
+$assemblyversion = $semanticversion.Replace("-build","")
 $assemblyinfo = Get-Content src\Birdhouse\Birdhouse\Properties\AssemblyInfo.cs
 $assemblyinfo.Replace("0.9.0.0", "$assemblyversion") | Set-Content src\Birdhouse\Birdhouse\Properties\AssemblyInfo.cs
 
-if ($ispreview) {
-	$nuspecversion = $semanticversion.Replace("-build", "-preview")
+if ($buildmetadata -ne $null) {
+	$nuspecversion = $semanticversion.Replace("-build", $buildmetadata)
 }
 else {
 	$nuspecversion = $semanticversion.Split("-")[0];
