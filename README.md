@@ -47,7 +47,7 @@ That pretty much covers how to use the library. Hope it works for you and if you
 ## Futures
 The current 1.0.0 release of the Birdhouse library is functionally complete. However I am planning future enhancements.
 
-- **Event Streaming***; support for receiving updates from the server so that updates from the thermostat can be represented without having to make another request (necessarily).
+- **Event Streaming**; support for receiving updates from the server so that updates from the thermostat can be represented without having to make another request (necessarily).
 - **INotifyPropertyChanged**; support so that clients that support data-binding can take advantage of updates coming back from the server.
 - **Samples and Documentation**; to be progressively added so folks know how to use the library with practical examples for various platforms.
 
