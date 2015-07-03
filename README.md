@@ -25,7 +25,13 @@ The response to this request will contain a JSON result that looks something lik
 
 You are after the *access token*. Most applications will store this in some kind durable way so that they can make subsequent requests without requiring user authorization. Note that you can ignore the expiry for now, from my research it doesn't appear that the Nest REST API supports another *OAuth 2.0* concept of *refresh tokens* where a client can request a new *access token*.
 
-Now that you have the *access token* you are ready to go ahead and use the Birdhouse library. The central class in the library is the ```NestClient```. All you have to do is construct an instance of this class, passing in the *access token* and you can start getting data back from your nest.
+Now that you have the *access token* you are ready to go ahead and use the Birdhouse library. Just install the Birdhouse library via NuGet.
+
+```powershell
+Install-Package Birdhouse
+```
+
+The central class in the library is the ```NestClient```. All you have to do is construct an instance of this class, passing in the *access token* and you can start getting data back from your nest.
 
 ```csharp
 var client = new NestClient(accessToken);
