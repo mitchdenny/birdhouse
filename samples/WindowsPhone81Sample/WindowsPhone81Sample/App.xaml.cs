@@ -17,6 +17,7 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Animation;
 using Windows.UI.Xaml.Navigation;
+using WindowsPhone81Sample.Utils;
 using WindowsPhone81Sample.Views;
 
 // The Blank Application template is documented at http://go.microsoft.com/fwlink/?LinkId=391641
@@ -106,6 +107,17 @@ namespace WindowsPhone81Sample
 
             // Ensure the current window is active
             Window.Current.Activate();
+        }
+
+        protected override void OnActivated(IActivatedEventArgs args)
+        {
+            if (args.Kind == ActivationKind.WebAuthenticationBrokerContinuation)
+            {
+                var frame = Window.Current.Content as Frame;
+                var view = frame.Content as IWebAuthenticationContinuationBrokerView;
+            }
+
+            base.OnActivated(args);
         }
 
         /// <summary>

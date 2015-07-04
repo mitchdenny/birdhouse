@@ -9,19 +9,25 @@ namespace WindowsPhone81Sample.Utils
 {
     public class DelegateCommand : ICommand
     {
-        public DelegateCommand()
+        public DelegateCommand(Func<object, bool> canExecute, Action<object> execute)
         {
+            this.canExecute = canExecute;
+            this.execute = execute;
         }
+
+        private Func<object, bool> canExecute;
+        private Action<object> execute;
 
         public event EventHandler CanExecuteChanged;
 
         public bool CanExecute(object parameter)
         {
-            return true;
+            return this.canExecute(parameter);
         }
 
         public void Execute(object parameter)
         {
+            this.execute(parameter);
         }
     }
 }
