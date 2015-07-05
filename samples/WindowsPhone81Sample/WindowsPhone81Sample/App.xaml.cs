@@ -111,10 +111,29 @@ namespace WindowsPhone81Sample
 
         protected override void OnActivated(IActivatedEventArgs args)
         {
-            if (args.Kind == ActivationKind.WebAuthenticationBrokerContinuation)
+            var webAuthenticationBrokerContinuationEventArgs = args as IWebAuthenticationBrokerContinuationEventArgs;
+
+            if (webAuthenticationBrokerContinuationEventArgs != null)
             {
                 var frame = Window.Current.Content as Frame;
-                var view = frame.Content as IWebAuthenticationContinuationBrokerView;
+                var splashView = frame?.Content as SplashView;
+                if (frame.Content is SplashView)
+                {
+                    switch (webAuthenticationBrokerContinuationEventArgs.WebAuthenticationResult.ResponseStatus)
+                    {
+                        case WebAuthenticationStatus.Success:
+                            var code = NestAuthorizationHelper.ExtractAuthorizationCodeFromUrl(
+                                webAuthenticationBrokerContinuationEventArgs.WebAuthenticationResult.ResponseData
+                                );
+                            splashView.ContinueWithSuccess(code);
+                            break;
+
+                        case WebAuthenticationStatus.UserCancel:
+                        case WebAuthenticationStatus.ErrorHttp:
+                            splashView.ContinueWithFailure();
+                            break;
+                    }
+                }
             }
 
             base.OnActivated(args);

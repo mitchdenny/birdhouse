@@ -8,10 +8,21 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-    <local:BaseView.ViewModel>
-        <vm:SplashViewModel />
-    </local:BaseView.ViewModel>
-    <Grid HorizontalAlignment="Center">
-        <Button x:Name="SignInButton" Content="Sign In" Command="{Binding SignInCommand}" />
-    </Grid>
+    <StackPanel Margin="24,24,24,24">
+        <TextBlock Style="{ThemeResource HeaderTextBlockStyle}">sign-in</TextBlock>
+        <TextBlock Style="{ThemeResource BodyTextBlockStyle}">
+            When you tap Sign-In, Windows Phone
+            will display a built in OAuth 2.0
+            authentiction flow. If everything is
+            working, the authorization code will
+            be displayed followed by the access
+            token a few moments later.
+        </TextBlock>
+        <Button x:Name="SignInButton" Content="sign-in" Command="{Binding SignInCommand}" />
+        <TextBlock Style="{ThemeResource ControlHeaderTextBlockStyle}">Authorization code</TextBlock>
+        <TextBox x:Name="AuthorizationCodeTextBox" Text="{Binding AuthorizationCode}"/>
+        <TextBlock Style="{ThemeResource ControlHeaderTextBlockStyle}">Access token</TextBlock>
+        <TextBox x:Name="AccessTokenTextBox" Text="{Binding AccessToken}" />
+        <Button x:Name="ContinueButton" Content="continue" Command="{Binding ContinueCommand}" />
+    </StackPanel>
 </local:BaseView>
